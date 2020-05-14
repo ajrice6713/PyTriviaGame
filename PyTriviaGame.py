@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 """A text messaging trivia game that gives users questions and adds up points for each one they get one right"""
+__author__ = 'AJ Rice'
+__email__ = 'arice@bandwidth.com'
+__status__ = 'development'
 
 import os
 import random
@@ -21,13 +24,13 @@ try:
     # Account credentials to log into the API or UI
     BANDWIDTH_API_USER = os.environ["BANDWIDTH_API_USER"]
     BANDWIDTH_API_PASSWORD = os.environ["BANDWIDTH_API_PASSWORD"]
-
     # Tokens and secrets are generated through the application page on the dashboard
     BANDWIDTH_MESSAGING_TOKEN = os.environ["BANDWIDTH_MESSAGING_TOKEN"]
     BANDWIDTH_MESSAGING_SECRET = os.environ["BANDWIDTH_MESSAGING_SECRET"]
 
     # Application ID's created on dashboard (Ex. 123ab-cd4efg5-hijklm67-n8o9pqrst)
     BANDWIDTH_MSG_APPLICATION_ID = os.environ["BANDWIDTH_MESSAGING_APPLICATION_ID"]
+    BANDWIDTH_VOICE_APPLICATION_ID = os.environ["BANDWIDTH_VOICE_APPLICATION_ID"]
 except:
     print("Please set the environmental variables defined in the README")
     exit(-1)
