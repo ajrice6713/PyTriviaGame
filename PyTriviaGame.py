@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 """A text messaging trivia game that gives users questions and adds up points for each one they get one right"""
-__author__ = 'AJ Rice'
-__email__ = 'arice@bandwidth.com'
-__status__ = 'development'
 
 import os
 import random
@@ -30,7 +27,6 @@ try:
 
     # Application ID's created on dashboard (Ex. 123ab-cd4efg5-hijklm67-n8o9pqrst)
     BANDWIDTH_MSG_APPLICATION_ID = os.environ["BANDWIDTH_MESSAGING_APPLICATION_ID"]
-    BANDWIDTH_VOICE_APPLICATION_ID = os.environ["BANDWIDTH_VOICE_APPLICATION_ID"]
 except:
     print("Please set the environmental variables defined in the README")
     exit(-1)
