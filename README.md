@@ -3,18 +3,18 @@
 # PyTriviaGame
 </div>
 
-A basic trivia messaging game that leverages Bandwidth's messaging API along with the Python Trivia API, an API that 
+A basic trivia messaging game that leverages Bandwidth's messaging API along with the Python Trivia API, an API that
 pulls trivia questions from [OpenTDB](https://opentdb.com/).
 
 ## Pre-Requisites
-You will need a valid Bandwidth account, application, and location with a valid phone number and callback URL set. We 
-recommend using an ['ngrok'](https://ngrok.com/) generated URL for local testing. 
+You will need a valid Bandwidth account, application, and location with a valid phone number and callback URL set. We
+recommend using an ['ngrok'](https://ngrok.com/) generated URL for local testing.
 
 ## Description
-This is a small messaging app demonstrating some SMS Messaging capabilities using the Bandwidth API. 
+This is a small messaging app demonstrating some SMS Messaging capabilities using the Bandwidth API.
 
 ### Environmental Variables
-The following environmental variables need to be set. For more information about each variable. Read more about each 
+The following environmental variables need to be set. For more information about each variable. Read more about each
 variable on the [Security & Credentials Documentation Page](https://dev.bandwidth.com/guides/accountCredentials.html#top).
 
 | Variable                              | Description                             | Example                                            |
@@ -30,6 +30,18 @@ variable on the [Security & Credentials Documentation Page](https://dev.bandwidt
 | Callback Type          | URL                        |
 |:-----------------------|:---------------------------|
 | Messaging Callback     | `/callbacks/messaging`     |
+
+### Commands
+Clone the repo and run the following commands to get started
+```
+pip install bandwidth-sdk
+pip install Python-Trivia-API
+python PyTriviaApp.py
+```
+And in a seperate terminal window
+```
+./ngrok http 5000
+```
 
 ## What You Can Do
 * Text your Bandwidth number associated with the application to start receiving trivia questions
@@ -76,7 +88,7 @@ bandwidth_client = BandwidthClient(
 * Parsing out the callback using the APIHelper tools allows us to grab the important incoming message information
 
 ```python
-# Deserialize the JSON list we receive at the callback URL provided to Bandwidth 
+# Deserialize the JSON list we receive at the callback URL provided to Bandwidth
 raw_data = APIHelper.json_deserialize(request.data).pop()
 
 # Create a messaging callback object of the JSON data using the Bandwidth SDK
@@ -90,7 +102,7 @@ message: BandwidthMessage = messaging_callback.message
 
 * Bandwidth's messaging API sends both inbound message events and outbound delivery receipts (DLRs) to the same URL
 * We need to check the direction of the message to determine actions.
-  * For outbound messages, print the status and send a return value to exit our function 
+  * For outbound messages, print the status and send a return value to exit our function
   * If we fail to return and exit the function when receiving a DLR, our script will think that every DLR is a new message request from the user and send a new Trivia question each time - sticking us in an infinite loop.
 
 ```python
@@ -105,11 +117,11 @@ if is_dlr:
 ```python
     # our message owner in this use case is our Bandwidth telephone number that our end user is sending messages to
     owner = message.owner
-    
-    # message.mfrom is who the incoming message came from - this is where we want to send a new question 
+
+    # message.mfrom is who the incoming message came from - this is where we want to send a new question
     respondents = message.mfrom
-    
-    # Check the database to see if this user is new or existing, and 
+
+    # Check the database to see if this user is new or existing, and
     database_user = determine_new_user(respondents)
     database_user.time = datetime.utcnow()
 
@@ -121,8 +133,8 @@ if is_dlr:
 
 
 #### Check the incoming message content
-We need to determine what the user is sending to our Bandwidth number before we can decide on what to send back. The 
-code snippet below demonstrates just a few of our available options. 
+We need to determine what the user is sending to our Bandwidth number before we can decide on what to send back. The
+code snippet below demonstrates just a few of our available options.
 ```python
     if message.text.lower().strip() == 'new':
         # If user is requesting a new question, clear their answer field and generate a new question
@@ -195,7 +207,7 @@ code snippet below demonstrates just a few of our available options.
         db.session.commit()
 ```
 #### Create our outbound message
-If the user hasn't requested help or deletion of their account, we want to let them know if their answer was correct or not! 
+If the user hasn't requested help or deletion of their account, we want to let them know if their answer was correct or not!
 To do so, we need to send them a message back to let them know, as well as give them the new question we generated earlier.
 
 ```python
